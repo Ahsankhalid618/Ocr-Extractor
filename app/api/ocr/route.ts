@@ -5,8 +5,9 @@ import { join } from "path";
 
 // Ensure tmp directory exists
 const ensureTmpDir = async () => {
-  const tmpDir = join(process.cwd(), "tmp");
-  await mkdir(tmpDir, { recursive: true });
+  // const tmpDir = join(process.cwd(), "tmp");  For local host
+  // await mkdir(tmpDir, { recursive: true });   for localhost
+  const tmpDir = "/tmp"; // For serverless production like vercel
   return tmpDir;
 };
 
