@@ -36,7 +36,7 @@ export function MarkdownActions({ markdown }: MarkdownActionsProps) {
   };
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 justify-center">
       <Button
         variant="outline"
         onClick={handleTextToSpeech}
