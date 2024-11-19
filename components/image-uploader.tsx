@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
 import { Upload, Loader2, Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import { useToast } from "../hooks/use-toast"
 import { MarkdownActions } from "@/components/text-actions";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { FileUpload } from "@/components/ui/file-upload";
 
 export function ImageUploader() {
   const [extractedText, setExtractedText] = useState<string>("");
@@ -16,12 +16,12 @@ export function ImageUploader() {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
-      if (acceptedFiles.length === 0) return;
+  const handleFileUpload = useCallback(
+    async (files: File[]) => {
+      if (files.length === 0) return;
 
       setIsLoading(true);
-      const file = acceptedFiles[0];
+      const file = files[0];
       const formData = new FormData();
       formData.append("image", file);
 
@@ -52,14 +52,6 @@ export function ImageUploader() {
     [toast]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],
-    },
-    maxFiles: 1,
-  });
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(extractedText);
@@ -80,18 +72,15 @@ export function ImageUploader() {
 
   return (
     <div className="space-y-6">
-      <Card
-        {...getRootProps()}
-        className={`p-8 text-center cursor-pointer border-dashed hover:border-primary/50 transition-colors ${
-          isDragActive ? "border-primary" : ""
-        }`}
-      >
-        <input {...getInputProps()} />
-        <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
-        <p className="mt-4 text-sm text-muted-foreground">
-          Drag & drop an image here, or click to select
-        </p>
-      </Card>
+      <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+        <FileUpload 
+          onChange={handleFileUpload}
+          accept={{
+            "image/*": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],
+          }}
+          maxFiles={1}
+        />
+      </div>
 
       {isLoading && (
         <div className="flex items-center justify-center space-x-2">
