@@ -9,6 +9,7 @@ import { MarkdownActions } from "@/components/text-actions";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { FileUpload } from "@/components/ui/file-upload";
+import { MDXContent } from "@/components/mdx-content";
 
 export function ImageUploader() {
   const [extractedText, setExtractedText] = useState<string>("");
@@ -91,8 +92,8 @@ export function ImageUploader() {
 
       {extractedText && !isLoading && (
         <div className="space-y-4">
-          <Card className="p-4 relative group">
-            <div className="absolute right-2 top-2">
+          <Card className="p-8 relative group">
+            <div className="absolute right-4 top-4">
               <TooltipProvider delayDuration={0}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -128,7 +129,7 @@ export function ImageUploader() {
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <p className="whitespace-pre-wrap">{extractedText}</p>
+            <MDXContent source={extractedText} />
           </Card>
           <MarkdownActions markdown={extractedText} />
         </div>

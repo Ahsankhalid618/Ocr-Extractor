@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ocr } from 'llama-ocr';
-import { writeFile, mkdir } from "fs/promises";
+import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
 
 // Ensure tmp directory exists
@@ -38,7 +38,14 @@ export async function POST(request: NextRequest) {
       apiKey: process.env.TOGETHER_API_KEY
     });
 
-    return NextResponse.json({ markdown });
+    // Format the markdown with proper MDX syntax
+    const formattedMarkdown = markdown
+      .replace(/^/gm, '') // Remove any leading spaces
+      .replace(/\n{3,}/g, '\n\n') // Normalize multiple newlines
+      .replace(/```(\w+)?/g, '```$1\n') // Ensure code blocks have proper spacing
+      .trim();
+
+    return NextResponse.json({ markdown: formattedMarkdown });
   } catch (error) {
     console.error("OCR processing error:", error);
     return NextResponse.json(
