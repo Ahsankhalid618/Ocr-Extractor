@@ -10,6 +10,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { cn } from "@/lib/utils";
 import { FileUpload } from "@/components/ui/file-upload";
 import { MDXContent } from "@/components/mdx-content";
+import Loader from "@/components/loader"
+
 
 export function ImageUploader() {
   const [extractedText, setExtractedText] = useState<string>("");
@@ -85,8 +87,8 @@ export function ImageUploader() {
 
       {isLoading && (
         <div className="flex items-center justify-center space-x-2">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          <p>Processing image...</p>
+          <Loader />
+          <p>Processing Image</p>
         </div>
       )}
 
